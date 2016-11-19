@@ -1763,11 +1763,7 @@ void StartNode(boost::thread_group& threadGroup)
     //
     // Start threads
     //
-    //~
-    AddOneShot("64.137.233.165");
-    AddOneShot("104.154.158.54");
-	AddOneShot("104.154.130.80");
-
+   
     if (!GetBoolArg("-dnsseed", true))
         printf("DNS seeding disabled\n");
     else
