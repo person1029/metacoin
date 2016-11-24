@@ -1186,12 +1186,14 @@ void MapPort(bool)
 // The first name is used as information source for addrman.
 // The second name should resolve to a list of seed addresses.
 static const char *strMainNetDNSSeed[][2] = {
-   // {"seed1.qrk.cc", "seed1.qrk.cc"},
-    {"64.137.233.165", "64.137.233.165"}, //cl
-    {"104.154.158.54", "104.154.158.54"}, //g1
-    {"104.154.130.80", "104.154.130.80"}, //g2
-
-{NULL, NULL},
+ // {"seed1.qrk.cc", "seed1.qrk.cc"},
+    {"seeda.metacoin.gdn", "seeda.metacoin.gdn"},
+    {"seedb.metacoin.gdn", "seedb.metacoin.gdn"},
+    {"seedc.metacoin.gdn", "seedc.metacoin.gdn"},
+    {"seedd.metacoin.gdn", "seedd.metacoin.gdn"},
+    {"seede.metacoin.gdn", "seede.metacoin.gdn"},
+    {"seedf.metacoin.gdn", "seedf.metacoin.gdn"},
+    {NULL, NULL},
 };
 
 static const char *strTestNetDNSSeed[][2] = {
@@ -1763,7 +1765,9 @@ void StartNode(boost::thread_group& threadGroup)
     //
     // Start threads
     //
-   
+    //~
+
+
     if (!GetBoolArg("-dnsseed", true))
         printf("DNS seeding disabled\n");
     else
