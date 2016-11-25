@@ -46,6 +46,7 @@ addnodes:
 If the wallet is not connecting at startup try
 addnode=104.154.130.80
 addnode=64.137.233.165
+addnode=104.236.249.42
 
  (default ports)
 rpcport=8484
