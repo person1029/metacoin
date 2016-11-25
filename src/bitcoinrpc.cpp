@@ -346,6 +346,7 @@ Value enforcecheckpoint(const Array& params, bool fHelp)
 static const CRPCCommand vRPCCommands[] =
 { //  name                      actor (function)         okSafeMode threadSafe
   //  ------------------------  -----------------------  ---------- ----------
+    { "getnetworkhashps",       &getnetworkhashps,       true,      false },
     { "help",                   &help,                   true,      true },
     { "stop",                   &stop,                   true,      true },
     { "getblockcount",          &getblockcount,          true,      false },
@@ -1294,6 +1295,8 @@ Array RPCConvertValues(const std::string &strMethod, const std::vector<std::stri
     //
     // Special case non-string parameter types
     //
+	if (strMethod == "getnetworkhashps"       && n > 0) ConvertTo<int64_t>(params[0]);
+    if (strMethod == "getnetworkhashps"       && n > 1) ConvertTo<int64_t>(params[1]);
     if (strMethod == "stop"                   && n > 0) ConvertTo<bool>(params[0]);
     if (strMethod == "getaddednodeinfo"       && n > 0) ConvertTo<bool>(params[0]);
     if (strMethod == "setgenerate"            && n > 0) ConvertTo<bool>(params[0]);
