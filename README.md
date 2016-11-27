@@ -1,4 +1,4 @@
-Metacoin 1.1.0 - MET Relaunch
+Metacoin 1.1.x - MET Relaunch
 
 https://s11.postimg.org/5w2njqevj/metacoin.png
 
@@ -10,7 +10,7 @@ There will be no premine past block 1.
 
 SYMBOL: MET
 
-WEBSITE: tba
+WEBSITE AND FORUMS: http://www.metacoin.gdn/
 
 Source: https://github.com/person1029/metacoin/
 Windows QT Download: https://github.com/person1029/metacoin/releases/
@@ -60,3 +60,4 @@ rpcallowip=localhost
 MINING:
 - GPU Mining is possible.. see : https://bitcointalk.org/index.php?topic=475795 (using the quark algo)
 - CPU Mining is possible.. see : https://bitcointalk.org/index.php?topic=1326803 (using the quark algo)
+- ASIC Mining is possible.
