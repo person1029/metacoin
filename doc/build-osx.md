@@ -1,14 +1,38 @@
-Mac OS X Build Instructions and Notes
+Mac OS X bitcoind build instructions
 ====================================
-This guide will show you how to build bitcoind(headless client) for OSX.
+
+Authors
+-------
+
+* Laszlo Hanyecz <solar@heliacal.net>
+* Douglas Huff <dhuff@jrbobdobbs.org>
+* Colin Dean <cad@cad.cx>
+* Gavin Andresen <gavinandresen@gmail.com>
+
+License
+-------
+
+Copyright (c) 2009-2012 Bitcoin Developers
+
+Distributed under the MIT/X11 software license, see the accompanying
+file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+This product includes software developed by the OpenSSL Project for use in
+the OpenSSL Toolkit (http://www.openssl.org/).
+
+This product includes cryptographic software written by
+Eric Young (eay@cryptsoft.com) and UPnP software written by Thomas Bernard.
 
 Notes
 -----
 
-* Tested on OS X 10.6 through 10.9 on 64-bit Intel processors only.
-Older OSX releases or 32-bit processors are no longer supported.
+See `doc/readme-qt.rst` for instructions on building Bitcoin-Qt, the
+graphical user interface.
 
-* All of the commands should be executed in a Terminal application. The
+Tested on OS X 10.5 through 10.8 on Intel processors only. PPC is not
+supported because it is big-endian.
+
+All of the commands should be executed in a Terminal application. The
 built-in one is located in `/Applications/Utilities`.
 
 Preparation
@@ -28,7 +52,7 @@ not, it's the path of least resistance to install [Github for Mac](https://mac.g
 [Git for OS X](https://code.google.com/p/git-osx-installer/). It is also
 available via Homebrew or MacPorts.
 
-You will also need to install [Homebrew](http://brew.sh)
+You will also need to install [Homebrew](http://mxcl.github.io/homebrew/)
 or [MacPorts](https://www.macports.org/) in order to install library
 dependencies. It's largely a religious decision which to choose, but, as of
 December 2012, MacPorts is a little easier because you can just install the
@@ -46,23 +70,7 @@ Instructions: MacPorts
 
 Installing the dependencies using MacPorts is very straightforward.
 
-    sudo port install boost db48@+no_java openssl miniupnpc autoconf pkgconfig automake
-	sudo p install libdb++-de #
-	
-	#metacoin notes
-	#sudo port -f uninstall installed
-	sudo apt-get -y install libdb4.8-dev # Generally this step fails
-	sudo apt-get -y install libdb4.8++-dev # Generally this step fails
-	sudo apt-get -y install libboost1.37-dev # Sometimes this step fail
-	sudo apt-get -y install libboost-all-dev # Sometimes this step fail
-	sudo apt-get -y install libminiupnpc-dev
-	sudo apt-get -y install libdb++-dev
-	sudo apt-get -y install libprotobuf-dev
-	sudo apt-get -y install libqrencode-dev
-
-Optional: install Qt4
-
-    sudo port install qt4-mac qrencode protobuf-cpp
+    sudo port install boost db48@+no_java openssl miniupnpc
 
 ### Building `bitcoind`
 
@@ -71,92 +79,89 @@ Optional: install Qt4
         git clone git@github.com:bitcoin/bitcoin.git bitcoin
         cd bitcoin
 
-2.  Build bitcoind (and Bitcoin-Qt, if configured):
+2.  Build bitcoind:
 
-        ./autogen.sh
-        ./configure
-        make
-		
-		#with qt
-	#	./configure --with-qt
-	#	make -j8
+        cd src
+        make -f makefile.osx
 
 3.  It is a good idea to build and run the unit tests, too:
 
-        make check
+        make -f makefile.osx test
 
-Instructions: Homebrew
+Instructions: HomeBrew
 ----------------------
 
 #### Install dependencies using Homebrew
 
-        brew install autoconf automake berkeley-db4 boost miniupnpc openssl pkg-config protobuf qt
+        brew install boost miniupnpc openssl berkeley-db4
 
-Note: After you have installed the dependencies, you should check that the Homebrew installed version of OpenSSL is the one available for compilation. You can check this by typing
+Note: After you have installed the dependencies, you should check that the Brew installed version of OpenSSL is the one available for compilation. You can check this by typing
 
         openssl version
 
-into Terminal. You should see OpenSSL 1.0.1f 6 Jan 2014. 
-	wget ftp://gd.tuwien.ac.at/infosys/security/openssl/source/old/1.0.1/openssl-1.0.1f.tar.gz
-	./Configure darwin64-x86_64-cc
+into Terminal. You should see OpenSSL 1.0.1e 11 Feb 2013.
 
-If not, you can ensure that the Homebrew OpenSSL is correctly linked by running
+If not, you can ensure that the Brew OpenSSL is correctly linked by running
 
         brew link openssl --force
 
-Rerunning "openssl version" should now return the correct version. If it
-doesn't, make sure `/usr/local/bin` comes before `/usr/bin` in your
-PATH. 
+Rerunning "openssl version" should now return the correct version.
 
 ### Building `bitcoind`
 
 1. Clone the github tree to get the source code and go into the directory.
 
-        git clone https://github.com/bitcoin/bitcoin.git
+        git clone git@github.com:bitcoin/bitcoin.git bitcoin
         cd bitcoin
 
-2.  Build bitcoind:
+2.  Modify source in order to pick up the `openssl` library.
 
-        ./autogen.sh
-        ./configure
-        make
+    Edit `makefile.osx` to account for library location differences. There's a
+    diff in `contrib/homebrew/makefile.osx.patch` that shows what you need to
+    change, or you can just patch by doing
 
-3.  It is a good idea to build and run the unit tests, too:
+        patch -p1 < contrib/homebrew/makefile.osx.patch
 
-        make check
+3.  Build bitcoind:
+
+        cd src
+        make -f makefile.osx
+
+4.  It is a good idea to build and run the unit tests, too:
+
+        make -f makefile.osx test
 
 Creating a release build
 ------------------------
-You can ignore this section if you are building `bitcoind` for your own use.
 
-bitcoind/bitcoin-cli binaries are not included in the Bitcoin-Qt.app bundle.
+A bitcoind binary is not included in the Bitcoin-Qt.app bundle. You can ignore
+this section if you are building `bitcoind` for your own use.
 
-If you are building `bitcoind` or `Bitcoin-Qt` for others, your build machine should be set up
+If you are building `bitcoind` for others, your build machine should be set up
 as follows for maximum compatibility:
 
 All dependencies should be compiled with these flags:
 
- -mmacosx-version-min=10.6
- -arch x86_64
- -isysroot $(xcode-select --print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk
+    -mmacosx-version-min=10.5 -arch i386 -isysroot /Developer/SDKs/MacOSX10.5.sdk
 
- -mmacosx-version-min=10.6 -arch x86_64 -isysroot $(xcode-select --print-path)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk
-
- 
 For MacPorts, that means editing your macports.conf and setting
 `macosx_deployment_target` and `build_arch`:
 
-    macosx_deployment_target=10.6
-    build_arch=x86_64
+    macosx_deployment_target=10.5
+    build_arch=i386
 
 ... and then uninstalling and re-installing, or simply rebuilding, all ports.
 
 As of December 2012, the `boost` port does not obey `macosx_deployment_target`.
 Download `http://gavinandresen-bitcoin.s3.amazonaws.com/boost_macports_fix.zip`
-for a fix.
+for a fix. Some ports also seem to obey either `build_arch` or
+`macosx_deployment_target`, but not both at the same time. For example, building
+on an OS X 10.6 64-bit machine fails. Official release builds of Bitcoin-Qt are
+compiled on an OS X 10.6 32-bit machine to workaround that problem.
 
-Once dependencies are compiled, see release-process.md for how the Bitcoin-Qt.app
-bundle is packaged and signed to create the .dmg disk image that is distributed.
+Once dependencies are compiled, creating `Bitcoin-Qt.app` is easy:
+
+    make -f Makefile.osx RELEASE=1
 
 Running
 -------
@@ -167,17 +172,14 @@ directory. We have to first create the RPC configuration file, though.
 Run `./bitcoind` to get the filename where it should be put, or just try these
 commands:
 
-    echo -e "rpcuser=bitcoinrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Bitcoin/bitcoin.conf"
-    chmod 600 "/Users/${USER}/Library/Application Support/Bitcoin/bitcoin.conf"
+    echo -e "rpcuser=sifcoinrpc\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Sifcoin/sifcoin.conf"
+    chmod 600 "/Users/${USER}/Library/Application Support/Sifcoin/sifcoin.conf"
 
 When next you run it, it will start downloading the blockchain, but it won't
-output anything while it's doing this. This process may take several hours;
-you can monitor its process by looking at the debug.log file, like this:
-
-    tail -f $HOME/Library/Application\ Support/Bitcoin/debug.log
+output anything while it's doing this. This process may take several hours.
 
 Other commands:
 
+    ./bitcoind --help  # for a list of command-line options.
     ./bitcoind -daemon # to start the bitcoin daemon.
-    ./bitcoin-cli --help  # for a list of command-line options.
-    ./bitcoin-cli help    # When the daemon is running, to get a list of RPC commands
+    ./bitcoind help    # When the daemon is running, to get a list of RPC commands

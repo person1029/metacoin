@@ -1,7 +1,9 @@
-// Copyright (c) 2011-2013 The Bitcoin developers
-// Distributed under the MIT/X11 software license, see the accompanying
-// file COPYING or http://www.opensource.org/licenses/mit-license.php.
-
+/*
+ * Qt4 bitcoin GUI.
+ *
+ * W.J. van der Laan 2011-2012
+ * The Bitcoin Developers 2011-2013
+ */
 #ifndef WALLETVIEW_H
 #define WALLETVIEW_H
 
@@ -9,16 +11,17 @@
 
 class BitcoinGUI;
 class ClientModel;
-class OverviewPage;
-class ReceiveCoinsDialog;
-class SendCoinsDialog;
-class SendCoinsRecipient;
-class TransactionView;
 class WalletModel;
+class TransactionView;
+class OverviewPage;
+class AddressBookPage;
+class SendCoinsDialog;
+class SignVerifyMessageDialog;
+class RPCConsole;
 
 QT_BEGIN_NAMESPACE
+class QLabel;
 class QModelIndex;
-class QProgressDialog;
 QT_END_NAMESPACE
 
 /*
@@ -32,7 +35,7 @@ class WalletView : public QStackedWidget
     Q_OBJECT
 
 public:
-    explicit WalletView(QWidget *parent);
+    explicit WalletView(QWidget *parent, BitcoinGUI *_gui);
     ~WalletView();
 
     void setBitcoinGUI(BitcoinGUI *gui);
@@ -46,28 +49,31 @@ public:
     */
     void setWalletModel(WalletModel *walletModel);
 
-    bool handlePaymentRequest(const SendCoinsRecipient& recipient);
+    bool handleURI(const QString &uri);
 
     void showOutOfSyncWarning(bool fShow);
 
 private:
+    BitcoinGUI *gui;
     ClientModel *clientModel;
     WalletModel *walletModel;
 
     OverviewPage *overviewPage;
     QWidget *transactionsPage;
-    ReceiveCoinsDialog *receiveCoinsPage;
+    AddressBookPage *addressBookPage;
+    AddressBookPage *receiveCoinsPage;
     SendCoinsDialog *sendCoinsPage;
+    SignVerifyMessageDialog *signVerifyMessageDialog;
 
     TransactionView *transactionView;
-
-    QProgressDialog *progressDialog;
 
 public slots:
     /** Switch to overview (home) page */
     void gotoOverviewPage();
     /** Switch to history (transactions) page */
     void gotoHistoryPage();
+    /** Switch to address book page */
+    void gotoAddressBookPage();
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
@@ -82,7 +88,7 @@ public slots:
 
         The new items are those between start and end inclusive, under the given parent item.
     */
-    void processNewTransaction(const QModelIndex& parent, int start, int /*end*/);
+    void incomingTransaction(const QModelIndex& parent, int start, int /*end*/);
     /** Encrypt the wallet */
     void encryptWallet(bool status);
     /** Backup the wallet */
@@ -92,26 +98,7 @@ public slots:
     /** Ask for passphrase to unlock wallet temporarily */
     void unlockWallet();
 
-    /** Show used sending addresses */
-    void usedSendingAddresses();
-    /** Show used receiving addresses */
-    void usedReceivingAddresses();
-
-    /** Re-emit encryption status signal */
-    void updateEncryptionStatus();
-
-    /** Show progress dialog e.g. for rescan */
-    void showProgress(const QString &title, int nProgress);
-
-signals:
-    /** Signal that we want to show the main window */
-    void showNormalIfMinimized();
-    /**  Fired when a message should be reported to the user */
-    void message(const QString &title, const QString &message, unsigned int style);
-    /** Encryption status of wallet changed */
-    void encryptionStatusChanged(int status);
-    /** Notify that a new transaction appeared */
-    void incomingTransaction(const QString& date, int unit, qint64 amount, const QString& type, const QString& address);
+    void setEncryptionStatus();
 };
 
 #endif // WALLETVIEW_H

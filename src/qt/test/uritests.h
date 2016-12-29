@@ -1,8 +1,8 @@
 #ifndef URITESTS_H
 #define URITESTS_H
 
-#include <QObject>
 #include <QTest>
+#include <QObject>
 
 class URITests : public QObject
 {
