@@ -1,5 +1,7 @@
 Metacoin Core 1.2
 
+*If there's a problem building 1.2 Core please report and use the 1.1.2 branch if needed.*
+
 SYMBOL: MET
 WEBSITE AND FORUMS: http://www.metacoin.gdn/
 Source: https://github.com/person1029/metacoin/
