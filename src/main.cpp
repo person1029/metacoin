@@ -1179,7 +1179,11 @@ void static PruneOrphanBlocks()
 }
 
 static const int64_t nGenesisBlockRewardCoin = 1 * COIN;
+<<<<<<< HEAD
 static const int64_t nBlockRewardStartCoin = 500 * COIN;
+=======
+static const int64_t nBlockRewardStartCoin = 100 * COIN;
+>>>>>>> refs/remotes/origin/master
 static const int64_t nBlockRewardMinimumCoin = 1 * COIN;
 
 static const int64_t nTargetTimespan = 10 * 60; // 10 minutes
@@ -1190,6 +1194,7 @@ int64_t GetBlockValue(int nHeight, int64_t nFees)
 {
     int64_t nSubsidy = 100 * COIN;
     int64_t s = nSubsidy;
+<<<<<<< HEAD
 	
     for (int i = 1; i < 8; i++)
 	{
@@ -1198,6 +1203,11 @@ int64_t GetBlockValue(int nHeight, int64_t nFees)
             nSubsidy = (int64_t)(s * pow(0.8, i));
 		}
 	}
+=======
+    for (int i = 1; i < 8; i++)
+        if (nHeight > i * 144000)
+            nSubsidy = (int64_t)(s * pow(0.8, i));
+>>>>>>> refs/remotes/origin/master
     return nSubsidy + nFees;
 }
 
