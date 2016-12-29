@@ -1,19 +1,10 @@
-Metacoin 1.1.x - MET Relaunch
-
-https://s11.postimg.org/5w2njqevj/metacoin.png
-
-CHANGES:
-The specs of the coin remain the same.
-This build will start from block 0.
-No coins from the previous MET will be passed over.
-There will be no premine past block 1.
+Metacoin Core 1.2
 
 SYMBOL: MET
-
 WEBSITE AND FORUMS: http://www.metacoin.gdn/
-
 Source: https://github.com/person1029/metacoin/
-Windows QT Download: https://github.com/person1029/metacoin/releases/
+Windows QT Download: https://github.com/person1029/metacoin/releases/ or metacoin.gdn
+Bitcointalk: https://bitcointalk.org/index.php?topic=1685498.0
 
 Based on quarkcoin
 
@@ -36,17 +27,17 @@ BLOCK REWARDS:
 - 1,008,001+ = 20
 
 PREMINE:
-- 1 block for testing (100 MET).
+- 5 block for testing (500 MET).
 
 CONF AND CONNECTING:
 - metacoin.conf (for windows: you'll need to create this and place it in the AppData/Roaming/Metacoin directory)
 
 addnodes:
-
-If the wallet is not connecting at startup try
-addnode=104.154.130.80
-addnode=64.137.233.165
-addnode=104.236.249.42
+If the wallet is not connecting at startup try 
+addnode=64.137.217.113
+addnode=64.137.215.87
+addnode=64.137.220.108
+addnode=104.197.48.111
 
  (default ports)
 rpcport=8484

@@ -1,0 +1,31 @@
+~ Building Bitcoin Core QT (Or Similair) Using Linux Ubuntu 14.04 ~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~ This guide is for building a Bitcoin/Metacoin Windows QT using an Ubuntu 14.04 installation.
+
+# If you're trying to build a previous version and are getting stuck with lib errors,
+# try and replace bitcoin_qt.m4 with the newest bitcoin/src/m4/bitcoin_qt.m4.
+
+# Using a fresh install Ubuntu 14.04 x64,
+
+sudo apt-get update
+sudo apt-get install -y build-essential libtool autotools-dev autoconf automake \
+libqt5gui5 libqt5dbus5 qttools5-dev qttools5-dev-tools libprotobuf-dev \
+libqt5core5a:i386 libqt5core5a \
+g++-mingw-w64-i686 mingw-w64-i686-dev g++-mingw-w64-x86-64 mingw-w64-x86-64-dev curl \
+pkg-config git
+cd
+git clone https://github.com/bitcoin/bitcoin.git # or another coin
+
+#32 bit setup
+cd bitcoin/depends
+make HOST=i686-w64-mingw32 -j5 #takes some time
+cd ..
+./configure --prefix=`pwd`/depends/i686-w64-mingw32 --with-gui=qt5 -enable-tests=no
+#64 bit setup
+cd bitcoin/depends
+make HOST=x86_64-w64-mingw32 -j5 #takes some time
+cd ..
+./configure --prefix=`pwd`/depends/x86_64-w64-mingw32 --with-gui=qt5 -enable-tests=no
+make
+
+# notes: ./configure <prefix> --with-gui=qt5 -enable-tests=no --enable-hardening -with-qtdbus=yes --without-miniupnpc
